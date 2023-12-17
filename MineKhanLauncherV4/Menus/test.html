@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>MineKhan Launcher</title>
+	<link rel="icon" href="favicon.ico?" type="image/ico">
+
+	<style>
+
+                a:link {
+color: green;
+background-color: charlestongreen;
+text-decoration: none;
+}
+		body {
+			background-color: rgb(255, 255, 255);
+		}
+
+		.blue {
+			background-color: blue;
+		}
+
+		.green {
+			background-color: green;
+		}
+
+		.white {
+			background-color: rgb(255, 255, 255);
+		}
+
+		.black {
+			background-color: black;
+		}
+
+		.yellow {
+			background-color: rgb(255, 255, 0);
+		}
+                .onyx {
+			background-color: rgb(53,56,57);
+
+		}
+                .davygray {
+                          background-color: rgb(85,85,85)
+                }
+                .charlestongreen {
+                                 background-color: rgb(52,52,52)
+                }
+	</style>
+
+<script type="text/javascript">
+    function goToNewPage()
+    {
+        var url = document.getElementById('list').value;
+        if(url != 'none') {
+            window.location = url;
+        }
+    }
+</script>
+
+</head>
+
+<style>
+	body {
+		background-color: rgb(52,52,52);
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+		background-size: cover;
+	}
+</style>
+
+<body>
+
+	</div>
+
+	<h1 class="green">MineKhan Launcher</h1>
+	<img border="0" alt="minekhan" src="minekhan.png" width="433" height="74" class="center">
+<p></p>
+	
+        <form>
+<select name="list" id="list" accesskey="target">
+    <option value='none' selected>Choose a theme</option>
+    <option value="index.html">Theme 1</option>
+    <option value="theme2.html">Theme 2</option>
+    <option value="theme3.html">Theme 3</option>
+</select>
+<input type=button value="Play" onclick="goToNewPage()" />
+</form>
+
+    </body>
+
+</html>

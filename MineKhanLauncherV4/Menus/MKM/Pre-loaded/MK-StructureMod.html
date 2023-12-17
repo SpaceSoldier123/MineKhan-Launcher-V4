@@ -1,0 +1,247 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://thingmaker.us.eu.org/minekhan/mods/MineKhan%20with%20structures.html
+Subject: MineKhan with structures
+Date: Wed, 13 Dec 2023 09:02:59 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--fImD9pc424SdOt4QZVdAONe5MJ34BEvnp6ikDgEpTO----"
+
+
+------MultipartBoundary--fImD9pc424SdOt4QZVdAONe5MJ34BEvnp6ikDgEpTO----
+Content-Type: text/html
+Content-ID: <frame-DC0721A99245FA967CDF879DC3F803F5@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://thingmaker.us.eu.org/minekhan/mods/MineKhan%20with%20structures.html
+
+<!DOCTYPE html><!-- @MineKhan version Alpha 0.7.1
+
+The structures are generated
+To make your own structures, find "Format for"
+
+	NOTE:
+The "Save" button saves your world to your local browser. Nobody else can s=
+ee it. However, if you're on a public or shared computer, that save may be =
+deleted unexpectedly. So it's a good idea to keep a safe copy of your save =
+string somewhere where it won't be deleted.
+
+To share your save with other people, copy your world string into the "load=
+String" variable on line 189.
+
+	Controls:
+
+ * Right-click (or ctrl + left-click): place block
+ * Left-click: Remove block
+ * Middle-click: Pick block
+ * Q: Sprint
+ * Shift: Sneak
+ * W: Walk forward
+ * S: Walk backward
+ * A: Walk left
+ * D: Walk right
+ * E: Open inventory
+ * B: Toggle super Breaker
+ * Z: Zoom
+ * L: Toggle Spectator mode
+ * Enter: Toggle slab/stair mode
+ * Arrow Keys: look around
+ * P or Esc: pause/unpause
+ * 1-9 navigate hotbar
+ * Spacebar: jump
+ * Double jump: toggle flight
+ * Shift (flying): fly down
+ * Space (flying): fly up
+ * T: Reload textures
+ * ; (semicolon): Release the pointer without pausing (for screenshots)
+
+	Notes and accreditation:
+ * This program (MineKhan) was made by Willard (me). The original is https:=
+//www.khanacademy.org/cs/mc/5647155001376768 (just adding this so that spin=
+-offs have it)
+ * Zushah helped me with some of the menus in the 0.6 update via GitHub. ht=
+tps://www.khanacademy.org/profile/zushah77
+ * Element118 helped speed up the process of adding new textures significan=
+tly. https://www.khanacademy.org/profile/element118
+ * Danielkshin made the current main menu background. https://www.khanacade=
+my.org/profile/danielkshin
+
+ * This program originated as a spin-off of ScusCraft by ScusX.
+ * It's 99% different code at this point, but I still never would have made=
+ it this far without his code for reference.
+ * ScusCraft can be found here: https://www.khanacademy.org/computer-progra=
+mming/scuscraft-3d/5145400332058624
+ * My original spin-off can be found here: https://www.khanacademy.org/comp=
+uter-programming/high-performance-minecraft/5330738124357632
+ * While porting the code from PJS to a webpage, I copied the PJS source co=
+de for a few of their helper functions from here: https://raw.githubusercon=
+tent.com/Khan/processing-js/master/processing.js
+ * The textures are 100% copied from real Minecraft, and are the property o=
+f Mojang and Microsoft with whom I have no association.
+ * The real Minecraft game can be bought and downloaded at https://www.mine=
+craft.net/en-us/
+
+
+ * Chunks are kept in memory until you restart. So don't explore too far or=
+ memory usage will grow until it crashes unrecoverably.
+
+
+	To-Do:
+ * A lot. Check out the GitHub repo if you'd like to collaborate on this. M=
+ust use Discord.
+ * https://github.com/Willard21/MineKhan
+
+
+	How it works:
+
+The graphics in this project are done using WebGL, which is a web implement=
+ation of OpenGL ES 2.
+It allows us to write shader programs that run right on the GPU, which mean=
+s it can run as fast as any C++ game.
+The infamous P3D mode in Processing.js uses WebGL behind the scenes, but it=
+ does it so inefficiently that it might as well not even being using the GP=
+U.
+
+To properly utilize WebGL like this program does, you need to make efficien=
+t use of Vertext Buffer Objects (VBOs).
+A VBO is an array that contains a whole bunch of vertices. Since WebGL can =
+only render triangles and lines, these vertices are stored in multiples of =
+3.
+A vertex doesn't only include its world coordinates, though. It also includ=
+es its texture coordinates, and any other data you want the shaders to mani=
+pulate.
+In my case, every vertex has an X, Y, Z, textureX, textureY, and shadowInte=
+nsity. So 6 values for every block vertex in the world.
+
+A program can only draw 1 VBO per draw call. Since the texture data is atta=
+ched to the vertex data, you can't switch textures between vertices.
+That means you either have to make seperate draw calls for each texture, or=
+ only use 1 texture. I do the latter.
+I make a single 256x256 pixel texture, and store each of the 16x16 block te=
+xtures in a section of that big texture, and store the coordinates to it. T=
+his is informally called a "texture atlas".
+Then when I'm preparing my VBO, I send the texture coordinates along with t=
+he block coordinates so the shader knows how to map the 256x256 pixel textu=
+re onto the 16x16 pixel block face.
+
+I do this once for each chunk in the world, and store those VBOs so I can d=
+raw them every frame. If a block is edited in a chunk, then that VBO is rep=
+laced.
+Drawing a chunk after the VBO has been created is as simple as binding the =
+buffer and calling "gl.drawArrays" once per chunk. The GPU takes care of th=
+e rest.
+
+I also use what's called Vertex Array Objects (VAOs) to re-use shared verti=
+ces. Since the GPU expects triangles, and I want to draw squares, I need to=
+ draw 2 triangles (6 vertices) per square.
+That means 2 of them are being re-used. The VAO lets me tell the GPU to use=
+ the cached vertex data instead of looking for a new one, which offers a sm=
+all inprovement to GPU performance.
+This isn't entirely necessary, but it's considered best practice. Some Open=
+GL ES implementations require it, but WebGL 1 does not. I think WebGL 2 doe=
+s, but that's not as well supported.
+--><html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; char=
+set=3DUTF-8"><link rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-624=
+1922c-9992-4509-b9c2-5ea53ff84228@mhtml.blink" />
+	=09
+		<title>MineKhan with structures</title>
+		<link id=3D"vtfont" href=3D"https://fonts.googleapis.com/css2?family=3DVT=
+323&amp;display=3Dswap" rel=3D"stylesheet">
+	</head>
+=09
+	<body>
+	<canvas id=3D"overlay" tabindex=3D"0" width=3D"1304" height=3D"867" style=
+=3D"position: absolute; top: 0px; left: 0px"></canvas>
+	<input type=3D"text" id=3D"savebox" class=3D"hidden" spellcheck=3D"false" =
+style=3D"position: absolute; top: 10px; left: 10px; z-index: 1;">
+	<input type=3D"text" id=3D"boxcentertop" class=3D"hidden" spellcheck=3D"fa=
+lse">
+	<div id=3D"quota" class=3D"hidden"></div>
+	<div id=3D"onhover" class=3D"hidden"></div>
+	<p id=3D"savedirections" class=3D"hidden" style=3D"position: absolute; top=
+: 40px; left: 10px; z-index: 1; background-color: rgba(255, 255, 255, 0.3);=
+">
+		To save your world, copy/paste the saveString<br>
+		from this box into the code on line 189.<br>
+		var loadString =3D "Your Code Here";<br>
+		Then save the program as a Spin-off.
+	</p>
+	<div class=3D"world-select hidden" id=3D"worlds"><div class=3D"world" id=
+=3D"1702458128820"><strong>village (Pre-loaded)</strong><br>Alpha 0.7.1<br>=
+46 bytes used</div></div>
+	<p id=3D"message" class=3D"hidden" style=3D"position: absolute; top: 10px;=
+ right: 10px; z-index: 1; text-align: right; background-color: rgba(255, 25=
+5, 255, 0.3);"></p>
+=09
+=09
+=09
+=09
+=09
+	<canvas width=3D"1304" height=3D"867" style=3D"position: absolute; z-index=
+: -1; top: 0px; left: 0px;"></canvas>
+=09
+
+</body></html>
+------MultipartBoundary--fImD9pc424SdOt4QZVdAONe5MJ34BEvnp6ikDgEpTO----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-6241922c-9992-4509-b9c2-5ea53ff84228@mhtml.blink
+
+@charset "utf-8";
+
+body { overflow: hidden; }
+
+.world-select { width: 99vw; min-width: 300px; height: calc(100vh - 220px);=
+ position: absolute; bottom: 120px; overflow-y: auto; background-color: rgb=
+a(0, 0, 0, 0.6); justify-content: center; margin: 0px auto; }
+
+.world { width: 250px; height: auto; border: 1px solid black; font-size: 18=
+px; font-family: "Courier New", Courier, monospace; color: rgb(180, 180, 18=
+0); margin: 15px auto 0px; padding: 5px; cursor: pointer; }
+
+strong { color: white; }
+
+.selected { border: 3px solid white; padding: 3px; }
+
+input[type=3D"text"] { background-color: black; caret-color: white; border:=
+ 2px solid gray; color: white; font-size: 24px; padding-left: 12px; }
+
+input[type=3D"text"]:focus { border: 2px solid lightgray; }
+
+#boxcentertop { z-index: 1; width: 80vw; max-width: 400px; height: 50px; po=
+sition: relative; top: 30px; display: block; margin: 0px auto; }
+
+.hidden { display: none !important; }
+
+#onhover { background-color: rgba(0, 0, 0, 0.9); color: rgb(200, 200, 200);=
+ font-family: "Courier New", Courier, monospace; overflow-wrap: normal; wid=
+th: auto; max-width: 400px; position: absolute; z-index: 1; padding: 10px; =
+cursor: default; }
+
+#quota { display: block; position: absolute; width: 99vw; margin: 0px auto;=
+ bottom: 110px; z-index: 1; background-color: rgba(0, 0, 0, 0.6); justify-c=
+ontent: center; text-align: center; color: white; }
+------MultipartBoundary--fImD9pc424SdOt4QZVdAONe5MJ34BEvnp6ikDgEpTO----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://fonts.googleapis.com/css2?family=VT323&display=swap
+
+@charset "utf-8";
+
+@font-face { font-family: VT323; font-style: normal; font-weight: 400; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihIE=
+F2isQFJXGdg.woff2") format("woff2"); unicode-range: U+102-103, U+110-111, U=
++128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303-304, U+308-309,=
+ U+323, U+329, U+1EA0-1EF9, U+20AB; }
+
+@font-face { font-family: VT323; font-style: normal; font-weight: 400; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihIE=
+F2isRFJXGdg.woff2") format("woff2"); unicode-range: U+100-2AF, U+304, U+308=
+, U+329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113=
+, U+2C60-2C7F, U+A720-A7FF; }
+
+@font-face { font-family: VT323; font-style: normal; font-weight: 400; font=
+-display: swap; src: url("https://fonts.gstatic.com/s/vt323/v17/pxiKyp0ihIE=
+F2isfFJU.woff2") format("woff2"); unicode-range: U+0-FF, U+131, U+152-153, =
+U+2BB-2BC, U+2C6, U+2DA, U+2DC, U+304, U+308, U+329, U+2000-206F, U+2074, U=
++20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+------MultipartBoundary--fImD9pc424SdOt4QZVdAONe5MJ34BEvnp6ikDgEpTO------
